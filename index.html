@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>計算機</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Microsoft JhengHei', '微軟正黑體', Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .calculator-container {
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            max-width: 450px;
+            width: 100%;
+        }
+
+        h1 {
+            text-align: center;
+            color: white;
+            margin-bottom: 10px;
+            font-size: 24px;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .input-group {
+            margin-bottom: 20px;
+        }
+
+        .input-with-controls {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-top: 8px;
+        }
+
+        .control-btn {
+            width: 80px;
+            height: 45px;
+            border: none;
+            border-radius: 8px;
+            background: linear-gradient(135deg, #4facfe, #00f2fe);
+            color: white;
+            font-size: 30px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 2px 8px rgba(79, 172, 254, 0.3);
+            flex-shrink: 0;
+        }
+
+        .control-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 16px rgba(79, 172, 254, 0.4);
+        }
+
+        .control-btn:active {
+            transform: translateY(0);
+        }
+
+        .control-btn.minus {
+            background: linear-gradient(135deg, #ff6b6b, #ee5a24);
+            box-shadow: 0 2px 8px rgba(255, 107, 107, 0.3);
+        }
+
+        .control-btn.minus:hover {
+            box-shadow: 0 4px 16px rgba(255, 107, 107, 0.4);
+        }
+
+        label {
+            display: block;
+            color: white;
+            margin-bottom: 5px;
+            font-weight: bold;
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+        }
+
+        input[type="number"] {
+            flex: 1;
+            padding: 12px 15px;
+            border: none;
+            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.9);
+            font-size: 24px;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            font-weight: bold;
+            min-width: 0;
+        }
+
+        input[type="number"]:focus {
+            outline: none;
+            background: rgba(255, 255, 255, 1);
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+            transform: translateY(-2px);
+        }
+
+        .result-container {
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 10px;
+            padding: 20px;
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        .result-label {
+            color: rgba(255, 255, 255, 0.9);
+            font-size: 14px;
+            margin-bottom: 10px;
+        }
+
+        .result-value {
+            color: white;
+            font-size: 24px;
+            font-weight: bold;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+            min-height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .error {
+            color: #ff6b6b;
+            font-size: 16px;
+        }
+
+        .clear-btn {
+            width: 100%;
+            padding: 12px;
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 10px;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 20px;
+        }
+
+        .clear-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        @media (max-width: 480px) {
+            .calculator-container {
+                padding: 20px;
+                margin: 10px;
+                max-width: 100%;
+            }
+            
+            h1 {
+                font-size: 20px;
+            }
+            
+            .control-btn {
+                width: 60px;
+                font-size: 20px;
+            }
+            
+            .input-with-controls {
+                gap: 8px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="calculator-container">
+        <h1>計算機</h1>
+        
+        <div class="input-group">
+            <label for="x">流水：</label>
+            <div class="input-with-controls">
+                <input type="number" id="x" step="any" value="0">
+                <button class="control-btn" onclick="increaseValue('x')">+</button>
+                <button class="control-btn minus" onclick="decreaseValue('x')">-</button>
+            </div>
+        </div>
+        
+        <div class="input-group">
+            <label for="y">和：</label>
+            <div class="input-with-controls">
+                <input type="number" id="y" step="any" value="0">
+                <button class="control-btn" onclick="increaseValue('y')">+</button>
+                <button class="control-btn minus" onclick="decreaseValue('y')">-</button>
+            </div>
+        </div>
+        
+        <div class="input-group">
+            <label for="A">除數：</label>
+            <div class="input-with-controls">
+                <input type="number" id="A" step="any" value="1">
+                <button class="control-btn" onclick="increaseValue('A')">+</button>
+                <button class="control-btn minus" onclick="decreaseValue('A')">-</button>
+            </div>
+        </div>
+        
+        <div class="input-group">
+            <label for="B">調整：</label>
+            <div class="input-with-controls">
+                <input type="number" id="B" step="any" value="0">
+                <button class="control-btn" onclick="increaseValue('B')">+</button>
+                <button class="control-btn minus" onclick="decreaseValue('B')">-</button>
+            </div>
+        </div>
+        
+        <div class="result-container">
+            <div class="result-label">計算結果：</div>
+            <div class="result-value" id="result">0</div>
+        </div>
+        
+        <button class="clear-btn" onclick="resetAll()">重設為預設值</button>
+    </div>
+
+    <script>
+        // 自動計算函數
+        function calculate() {
+            // 取得輸入值
+            const x = parseFloat(document.getElementById('x').value) || 0;
+            const y = parseFloat(document.getElementById('y').value) || 0;
+            const A = parseFloat(document.getElementById('A').value) || 1;
+            const B = parseFloat(document.getElementById('B').value) || 0;
+            
+            const resultElement = document.getElementById('result');
+            
+            // 檢查除數不能為零
+            if (A === 0) {
+                resultElement.innerHTML = '<span class="error">A 不能為 0</span>';
+                return;
+            }
+            
+            // 執行計算 (x-y) % A + B (取餘數)
+            const result = (x - y) % A + B;
+            
+            // 顯示結果
+            resultElement.innerHTML = result;
+        }
+        
+        // 增加數值
+        function increaseValue(fieldId) {
+            const input = document.getElementById(fieldId);
+            let currentValue = parseFloat(input.value) || 0;
+            input.value = currentValue + 1;
+            calculate(); // 自動計算
+        }
+        
+        // 減少數值
+        function decreaseValue(fieldId) {
+            const input = document.getElementById(fieldId);
+            let currentValue = parseFloat(input.value) || 0;
+            input.value = currentValue - 1;
+            calculate(); // 自動計算
+        }
+        
+        // 重設為預設值
+        function resetAll() {
+            document.getElementById('x').value = '0';
+            document.getElementById('y').value = '0';
+            document.getElementById('A').value = '1';
+            document.getElementById('B').value = '0';
+            calculate(); // 重新計算
+        }
+        
+        // 當輸入框數值改變時自動計算
+        const inputs = document.querySelectorAll('input[type="number"]');
+        inputs.forEach(input => {
+            input.addEventListener('input', calculate);
+            input.addEventListener('change', calculate);
+        });
+        
+        // 頁面載入時執行一次計算
+        window.addEventListener('load', calculate);
+    </script>
+</body>
+</html>
